@@ -81,6 +81,24 @@ class ContentValidationListenerTest extends TestCase
         ]);
     }
 
+    public function tstRemoveMethods()
+    {
+        $className = 'ZF\ContentValidation\ContentValidationListener';
+        $listener = $this->getMockBuilder($className)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $listener->expects($this->at(0))->method('removeMethodWithoutBody')->with('GET');
+
+        $reflectedClass = new \ReflectionClass($className);
+        $constructor = $reflectedClass->getConstructor();
+        $constructor->invoke($listener, [
+            'methods_with_bodies' => [
+                'GET',
+            ],
+        ]);
+    }
+
     /**
      * @dataProvider nonBodyMethods
      */

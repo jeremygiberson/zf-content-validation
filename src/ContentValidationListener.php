@@ -90,6 +90,12 @@ class ContentValidationListener implements ListenerAggregateInterface, EventMana
                 $this->addMethodWithoutBody($method);
             }
         }
+
+        if (isset($config['methods_with_bodies']) && is_array($config['methods_with_bodies'])) {
+            foreach ($config['methods_with_bodies'] as $method) {
+                $this->removeMethodWithoutBody($method);
+            }
+        }
     }
 
     /**
@@ -319,6 +325,15 @@ class ContentValidationListener implements ListenerAggregateInterface, EventMana
     public function addMethodWithoutBody($method)
     {
         $this->methodsWithoutBodies[] = $method;
+    }
+
+    /**
+     * Remove HTTP Method without body content
+     * @param string $method
+     */
+    public function removeMethodWithoutBody($method)
+    {
+        unset($this->methodsWithoutBodies[$method]);
     }
 
     /**
